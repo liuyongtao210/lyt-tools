@@ -715,7 +715,33 @@ class mediaPlay {
 
     }
 }
-
+const toTwoArray =function(x, y) {
+    let reg = /^[1-9]+[0-9]*]*$/
+    if (!(x instanceof Array)) {
+        console.log('请传入数组')
+        return false
+    }
+    if (!reg.test(y)) {
+        console.log('请输入正整数')
+        return false
+    }
+    let arr = x
+    let num = Math.ceil(x.length / y) // 每组Y个 共分几组
+    let j = 0
+    let newArr = []
+    for (let i = 0; i < num; i++) {
+        let a = []
+        for (let k = 0; k < y; k++) {
+            // if (j > x.length - 1) {
+            // 	break
+            // }
+            a.push(arr[j])
+            j++
+        }
+        newArr.push(a)
+    }
+    return newArr
+}
 var upload = new upLoadFile()
 var calendars = new calendar()
 var draw = new drawLine()
@@ -728,5 +754,6 @@ export default {
     draw: draw,
     copy: copy,
     countdown:countdown,
-    media:media
+    media:media,
+    toTwoArray:toTwoArray
 }
