@@ -742,6 +742,98 @@ const toTwoArray =function(x, y) {
     }
     return newArr
 }
+const DayList =function(date = new Date()) {
+    //处理时间方法
+    this.year = new Date(date).getFullYear(); //当前年
+    this.month = new Date(date).getMonth() + 1; //当前月
+    // 设置月份数组对象：
+    let dateArray = [];
+    // 获取初始化时间
+    let initDate = new Date(date);
+    let year = initDate.getFullYear();
+    let month = initDate.getMonth() + 1;
+    // let day =initDate.getDate();
+    // 获取初始化时间当月有多少天：
+    let haveDay = new Date(year, month, 0).getDate();
+
+    // 获取当前时间
+    let currentDate = new Date(); //当前时间
+    let currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth() + 1;
+    let currentDay = currentDate.getDate();
+
+    // 获取初始化时间的上个月：
+    let prevDate = new Date(year, month - 1, 0);
+    let prevYear = prevDate.getFullYear();
+    let prevMonth = prevDate.getMonth() + 1;
+    let prevDay = prevDate.getDate();
+    // 获取上个月最后一天是周几
+    let preMonthLastWeek = prevDate.getDay() == 0 ? 7 : prevDate.getDay();
+
+    // 获取初始化时间下个月：
+    let nextDate = new Date(year, month + 1, 0);
+    let nextYear = nextDate.getFullYear();
+    let nextMonth = nextDate.getMonth() + 1;
+    // let nextDay =nextDate.getDate();
+
+    for (let i = 0; i < 42; i++) {
+      let dayObj = {
+        year: "",
+        month: "",
+        day: "",
+        timeStamp: "",
+        isCurrentMonth: false,
+        isCurrentDay: false,
+        haveDate: false,
+        weight: "",
+        check: false
+      };
+      dateArray.push(dayObj);
+    }
+    // 设置初始化时间数据：
+    for (let i = 0; i < haveDay; i++) {
+      let j = preMonthLastWeek + i;
+      dateArray[j].year = year;
+      dateArray[j].month = month;
+      dateArray[j].day = i + 1;
+      dateArray[j].timeStamp = new Date(year, month - 1, i + 1).getTime();
+      dateArray[j].isCurrentMonth = true;
+      if (
+        currentYear == year &&
+        currentMonth == month &&
+        currentDay == dateArray[j].day
+      ) {
+        dateArray[j].isCurrentDay = true;
+        dateArray[j].check = true;
+      }
+    }
+    // 设置初始化时间的上个月的数据：
+    for (let i = 0; i < preMonthLastWeek; i++) {
+      dateArray[i].year = prevYear;
+      dateArray[i].month = prevMonth;
+      dateArray[i].day = prevDay - preMonthLastWeek + 1 + i;
+      dateArray[i].timeStamp = new Date(
+        prevYear,
+        prevMonth - 1,
+        prevDay - preMonthLastWeek + 1 + i
+      ).getTime();
+    }
+    // 设置初始化时间的下个月的数据：
+    for (let i = 0; i < 42 - preMonthLastWeek - haveDay; i++) {
+      //设置日历数组中下个月的显示数据
+      let j = preMonthLastWeek + haveDay + i;
+      dateArray[j].year = nextYear;
+      dateArray[j].month = nextMonth;
+      dateArray[j].day = i + 1;
+      dateArray[j].timeStamp = new Date(
+        nextYear,
+        nextMonth - 1,
+        i + 1
+      ).getTime();
+    }
+    // console.log(dateArray)
+    return dateArray;
+  }
 var upload = new upLoadFile()
 var calendars = new calendar()
 var draw = new drawLine()
@@ -755,5 +847,6 @@ export default {
     copy: copy,
     countdown:countdown,
     media:media,
-    toTwoArray:toTwoArray
+    toTwoArray:toTwoArray,
+    DayList:DayList
 }
